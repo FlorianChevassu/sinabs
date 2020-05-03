@@ -1,0 +1,10 @@
+target_sources(NGBS
+  PRIVATE
+    CMakeLists.txt
+    Project.hxx
+    Project.cxx
+    Property.hxx
+    Property.cxx
+    Target.hxx
+    Target.cxx
+)

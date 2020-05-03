@@ -1,0 +1,19 @@
+{
+  "version": 0.1,
+  "name": "core",
+  "target_types": [
+    {
+      "name": "file",
+      "properties": [
+        {
+          "name": "path",
+          "value": {
+            "type": "file",
+            "arity": "1"
+          }
+        }
+      ],
+      "default_property": "path"
+    }
+  ]
+}

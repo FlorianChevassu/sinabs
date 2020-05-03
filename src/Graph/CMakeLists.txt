@@ -1,0 +1,17 @@
+target_sources(NGBS
+  PRIVATE
+    CMakeLists.txt
+    Node.hxx
+    Node.cxx
+    Graph.hxx
+    Graph.cxx
+    GraphBuilder.hxx
+    GraphBuilder.cxx
+    ModuleBuilder.hxx
+    ModuleBuilder.cxx
+    ProjectBuilder.hxx
+    ProjectBuilder.cxx
+)
+
+add_subdirectory(Module)
+add_subdirectory(Project)

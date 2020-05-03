@@ -1,0 +1,57 @@
+{
+  "version": 0.1,
+  "extends": "native",
+  "target_types": [
+    {
+      "name": "executable",
+      "properties": [
+        {
+          "name": "PositionIndependentExecutable",
+          "value": {
+            "type": "bool",
+            "arity": "1"
+          },
+          "default_propagation": [ "children" ]
+        }
+      ]
+    },
+    {
+      "name": "static_library",
+      "properties": [
+        {
+          "name": "PositionIndependentCode",
+          "value": {
+            "type": "bool",
+            "arity": "1"
+          },
+          "default_propagation": [ "children" ]
+        }
+      ]
+    },
+    {
+      "name": "shared_library",
+      "properties": [
+        {
+          "name": "PositionIndependentCode",
+          "value": {
+            "type": "bool",
+            "arity": "1"
+          },
+          "default_propagation": [ "children" ]
+        }
+      ]
+    },
+    {
+      "name": "object",
+      "properties": [
+        {
+          "name": "PositionIndependentCode",
+          "value": {
+            "type": "bool",
+            "arity": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

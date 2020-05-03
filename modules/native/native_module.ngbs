@@ -1,0 +1,64 @@
+{
+  "version": 0.1,
+  "name": "native",
+  "depends": ["core"],
+  "target_types": [
+    {
+      "name": "executable",
+      "inline_targets": [
+        {
+          "name": "sources",
+          "type": "object",
+          "arity": "n"
+        }
+      ],
+      "dependent_target_types": [
+        "object",
+        "static_library",
+        "shared_library"
+      ]
+    },
+    {
+      "name": "static_library",
+      "inline_targets": [
+        {
+          "name": "sources",
+          "type": "object",
+          "arity": "n"
+        }
+      ],
+      "dependent_target_types": [
+        "object",
+        "static_library"
+      ]
+    },
+    {
+      "name": "shared_library",
+      "inline_targets": [
+        {
+          "name": "sources",
+          "type": "object",
+          "arity": "n"
+        }
+      ],
+      "dependent_target_types": [
+        "object",
+        "static_library"
+      ]
+    },
+    {
+      "name": "object",
+      "inline_targets": [
+        {
+          "name": "source_file",
+          "default":  true,
+          "type": "file",
+          "arity": "1"
+        }
+      ],
+      "dependent_target_types": [
+        "file"
+      ]
+    }
+  ]
+}
