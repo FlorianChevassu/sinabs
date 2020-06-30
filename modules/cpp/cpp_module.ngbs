@@ -1,0 +1,31 @@
+{
+  "version": 0.1,
+  "name": "cpp",
+  "extends": "native",
+  "target_types": [
+    {
+      "name": "executable",
+      "rule_generator": {
+        "path": "modules\\cpp\\executable_generator.chai"
+      }
+    },
+    {
+      "name": "static_library",
+      "rule_generator": {
+        "path": "modules\\cpp\\static_library_generator.chai"
+      }
+    },
+    {
+      "name": "shared_library",
+      "rule_generator": {
+        "path": "modules\\cpp\\shared_library_generator.chai"
+      }
+    },
+    {
+      "name": "object",
+      "rule_generator": {
+        "path": "modules\\cpp\\object_generator.chai"
+      }
+    }
+  ]
+}

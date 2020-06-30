@@ -1,35 +1,45 @@
 {
   "version": 0.1,
   "modules": [
-    "native"
+    "native",
+    "cpp"
   ],
   "project": {
-    "name": "Example",
+    "name": "NGBS",
     "targets": [
       {
-        "name": "Exe",
+        "name": "NGBS",
         "type": "executable",
+        "properties": {
+          "IncludeDirectories": [
+            "src"
+          ]
+        },
         "sources": [
-          "a.cpp",
-          "b.cpp",
-          "c.cpp",
+          "src/NGBS.cxx",
+          "src/Graph/Graph.cxx",
+          "src/Graph/GraphBuilder.cxx",
+          "src/Graph/ModuleBuilder.cxx",
+          "src/Graph/Node.cxx",
+          "src/Graph/ProjectBuilder.cxx",
+          "src/Graph/ScriptEngine.cxx",
+          "src/Graph/Module/Arity.cxx",
+          "src/Graph/Module/InlineTarget.cxx",
           {
-            "source_file": "d.cpp",
+            "source_file": "src/Graph/Module/Module.cxx",
             "properties": {
-              "PreprocessorDefinitions": [ "COMPILING_D" ]
+              "BigObject": true,
+              "IncludeDirectories": [
+                "src"
+              ]
             }
-          }
-        ],
-        "dependencies": [
-          "StaticLib"
-        ]
-      },
-      {
-        "name": "StaticLib",
-        "type": "static_library",
-        "sources": [
-          "s.cpp",
-          "s.hpp"
+          },
+          "src/Graph/Module/ModuleItem.cxx",
+          "src/Graph/Module/PropertyType.cxx",
+          "src/Graph/Module/TargetType.cxx",
+          "src/Graph/Project/Project.cxx",
+          "src/Graph/Project/Property.cxx",
+          "src/Graph/Project/Target.cxx"
         ]
       }
     ]

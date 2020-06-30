@@ -7,20 +7,6 @@
 
 namespace ngbs::graph::module
 {
-  Module::Module()
-  {
-    m_scriptEngine = std::make_unique<chaiscript::ChaiScript>();
-    
-    // Inject the required functions
-    m_scriptEngine->eval(
-      R"__(
-      def function_exists(String name) {
-        return contains(get_function_objects(), fun(elem) { return elem.first == name; });
-      })__"
-      );
-
-  }
-
   TargetType* Module::GetTargetTypeByName(const std::string& i_name)
   {
     return utils::GetObjectByName<TargetType, &TargetType::m_name>(this->m_targetTypes, i_name);

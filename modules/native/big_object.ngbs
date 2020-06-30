@@ -1,0 +1,19 @@
+{
+  "version": 0.1,
+  "extends": "native",
+  "target_types": [
+    {
+      "name": "object",
+      "properties": [
+        {
+          "name": "BigObject",
+          "value": {
+            "type": "bool",
+            "arity": "1"
+          },
+          "default_propagation": []
+        }
+      ]
+    }
+  ]
+}

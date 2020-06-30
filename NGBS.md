@@ -19,12 +19,9 @@
     - For example, PositionIndependentCode is a boolean property on a target of type executable or shared_library.
     - The property can be public, private or interface. (TODO: think of another API ?)
 
-- Types of targets defined in a "language configuration"
+- Types of targets defined in a "Module"
   - Default C++ language provides static_library, shared_library, executable, object, etc.
-  - A target just represents a "step" of the process.
-  - Each target defines its property set.
-    - For example, PositionIndependentCode is only available on the executable and shared_library targets.
- 
+  
 - A target can have "implicit sub-targets". For example, an executable with sources will create object targets for all the source files
 
 - The generation process should

@@ -1,0 +1,66 @@
+/**
+ * Implementation of the recursive GetTargetSources function 
+ */
+def GetTargetSourcesImpl(target, result)
+{
+  for (dep : target.GetDependentTargets())
+  {
+    if (target.GetType() == "object" && dep.GetType() == "file")
+    {
+      var path = dep.GetProperty("path");
+      if (!path.is_var_null())
+      {
+        result.push_back(path.GetValue());
+      }
+    }
+
+    GetTargetSourcesImpl(dep, result);
+  }
+}
+
+/**
+ * Given a target, return an array of strings containing all its source files
+ */
+def GetTargetSources(target)
+{
+  var result = [];
+  GetTargetSourcesImpl(target, result);
+  return result;
+}
+
+/**
+ * Given a target, return an array of strings containing all its source files
+ */
+def GetIncludeDirectories(target)
+{
+  var directories = target.GetProperty("IncludeDirectories");
+  if (!directories.is_var_null())
+  {
+    return directories.GetValue();
+  }
+  return [];
+}
+
+var sourceFiles = GetTargetSources(target);
+if (sourceFiles.size() > 1)
+{
+  throw("An object cannot have more than one source file !");
+}
+
+var relativeSource = RelativeTo(to_string(sourceFiles[0]), SourceDirectory);
+
+var includeDirs = GetIncludeDirectories(target);
+
+var command = "g++ "+ to_string(GetTargetSources(target)[0]);
+
+for(includeDir : includeDirs)
+{
+  command += " -I " + includeDir;
+}
+var objectFile = BuildDirectory + "/" + relativeSource + ".o";
+command += " -o " + objectFile;
+
+auto property = target.GetOrCreateProperty("GeneratedArtifacts");
+property.SetValue([objectFile]);
+
+return command;

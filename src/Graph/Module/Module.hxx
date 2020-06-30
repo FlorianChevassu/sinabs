@@ -15,11 +15,10 @@ namespace ngbs::graph::module
 class Module : public NodeBase
 {
 public:
+  Module() : NodeBase(nullptr) {}
+
   static const NodeType Type = NodeType::Module;
   NodeType GetNodeType() override { return Module::Type; }
-
-
-  Module();
 
   std::string m_name;
   std::vector<TargetType> m_targetTypes;
@@ -29,9 +28,6 @@ public:
 
   static void Load(const nlohmann::json& i_json, Module& i_module);
   static Module Load(const nlohmann::json& i_json);
-
-private:
-  std::unique_ptr<chaiscript::ChaiScript> m_scriptEngine;
 };
 
 }

@@ -1,0 +1,41 @@
+{
+  "version": 0.1,
+  "modules": [
+    "native",
+    "cpp"
+  ],
+  "project": {
+    "name": "Example",
+    "targets": [
+      {
+        "name": "Exe",
+        "type": "executable",
+        "sources": [
+          "a.cpp",
+          "b.cpp",
+          "c.cpp",
+          {
+            "source_file": "d.cpp",
+            "properties": {
+              "PreprocessorDefinitions": [ "COMPILING_D" ]
+            }
+          }
+        ],
+        "dependencies": [
+          "StaticLib"
+        ],
+        "properties": {
+          "PreprocessorDefinitions": [ "COMPILING_D" ]
+        }
+      },
+      {
+        "name": "StaticLib",
+        "type": "static_library",
+        "sources": [
+          "s.cpp",
+          "s.hpp"
+        ]
+      }
+    ]
+  }
+}

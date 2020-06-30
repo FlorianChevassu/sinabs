@@ -7,6 +7,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include <filesystem>
+
 namespace ngbs::graph
 {
   class GraphBuilder
@@ -14,19 +16,22 @@ namespace ngbs::graph
   public:
     void Process(const nlohmann::json& i_jsonProject);
 
-    Graph GetResult()
-    {
-      Graph tmp;
-      std::swap(tmp, m_graph);
-      return tmp;
-    }
+    Graph GetResult();
+
+    void SetSourceDirectory(const std::filesystem::path& i_path);
+    void SetBuildDirectory(const std::filesystem::path& i_path);
+
   private:
     Graph m_graph;
+    std::filesystem::path m_sourceDir;
+    std::filesystem::path m_buildDir;
 
   protected:
     module::Module* FindModule(const std::string& i_moduleName);
     void LoadModule(const std::string& i_moduleName);
 
     void LoadProject(const nlohmann::json& i_jsonProject);
+
+    void PropagateProperties();
   };
 }

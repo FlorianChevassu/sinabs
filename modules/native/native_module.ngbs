@@ -51,7 +51,7 @@
       "inline_targets": [
         {
           "name": "source_file",
-          "default":  true,
+          "default": true,
           "type": "file",
           "arity": "1"
         }

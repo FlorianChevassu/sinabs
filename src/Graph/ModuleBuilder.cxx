@@ -6,11 +6,21 @@
 
 namespace ngbs::graph
 {
+  void ModuleBuilder::SetSourceDirectory(const std::filesystem::path& i_path)
+  {
+    m_sourceDir = i_path;
+  }
+
+  void ModuleBuilder::SetBuildDirectory(const std::filesystem::path& i_path)
+  {
+    m_buildDir = i_path;
+  }
+
   void ModuleBuilder::Process(const std::string& i_moduleName)
   {
-    auto path = std::filesystem::current_path();
-    auto module_root = path / "modules" / i_moduleName;
-    auto module_file = path / "modules" / i_moduleName / (i_moduleName + "_module.ngbs");
+    // For now modules are supposed to be in the source directory. Add a "standard" module dir, in the NGBS installation folder for example.
+    auto module_root = m_sourceDir / "modules" / i_moduleName;
+    auto module_file = m_sourceDir / "modules" / i_moduleName / (i_moduleName + "_module.ngbs");
     if (!std::filesystem::exists(module_file))
     {
       std::cerr << "Module " << i_moduleName << " does not exist !";
@@ -26,7 +36,20 @@ namespace ngbs::graph
     {
       if (file != module_file)
       {
-        this->Process(nlohmann::json::parse(std::ifstream(file)));
+        std::filesystem::path filePath = file;
+        if (filePath.extension() != ".ngbs")
+        {
+          continue;
+        }
+        try
+        {
+          this->Process(nlohmann::json::parse(std::ifstream(filePath)));
+        }
+        catch (std::exception& e)
+        {
+          std::cerr << e.what();
+          int k = 2;
+        }
       }
     }
   }
@@ -42,7 +65,6 @@ namespace ngbs::graph
         this->Process(moduleName);
       }
     }
-    
 
     bool hasExtendKeyword = i_json.find("extends") != i_json.end();
     if (!hasExtendKeyword)
@@ -79,11 +101,31 @@ namespace ngbs::graph
       }
       else
       {
-        module::TargetType tt;// (module->m_scriptEngine);
+        auto baseTargetType = i_module.GetTargetTypeByName(json_target_type.at("base_target"));
+        assert(baseTargetType);
+        module::TargetType tt = *baseTargetType;
         tt.Load(json_target_type);
         i_module.m_targetTypes.push_back(std::move(tt));
       }
     }
+  }
+
+  std::string ModuleBuilder::GetModuleFromTargetId(const std::string& i_targetId)
+  {
+    auto it = i_targetId.find("::");
+    if (it != std::string::npos)
+    {
+      return i_targetId.substr(0, it);
+    }
+    return "";
+  }
+
+  module::TargetType* ModuleBuilder::GetTargetTypeByName(const std::string& i_name)
+  {
+    auto moduleName = this->GetModuleFromTargetId(i_name);
+    assert(!moduleName.empty());
+    auto module = this->m_graph.FindNode<module::Module>([moduleName](const module::Module& i_module) { return i_module.m_name == moduleName; });
+    return module->GetTargetTypeByName(i_name.substr(moduleName.size() + 2));
   }
 
   void ModuleBuilder::ProcessNewModule(const nlohmann::json& i_json)
@@ -92,29 +134,36 @@ namespace ngbs::graph
     i_json.at("name").get_to(module->m_name);
     for (const auto& json_target_type : i_json.at("target_types"))
     {
-      auto targetType = module->GetTargetTypeByName(json_target_type.at("name"));
+      auto targetTypeName = json_target_type.at("name");
+      auto targetType = module->GetTargetTypeByName(targetTypeName);
       if (targetType)
       {
         targetType->Load(json_target_type);
       }
       else
       {
-        module::TargetType tt;// (module->m_scriptEngine);
-        tt.Load(json_target_type);
-        module->m_targetTypes.push_back(std::move(tt));
-      }
-    }
-
-    // Execute the corresponding module script, if any.
-    if (i_json.find("script") != i_json.end())
-    {
-      std::string script = i_json.at("script");
-      // TODO: save the path of the module file to be able to find the script relatively
-      auto path = std::filesystem::current_path();
-      auto module_script = path / script;
-      if (std::filesystem::exists(module_script))
-      {
-        //module->m_scriptEngine->eval_file(module_script.string());
+        if (targetTypeName != "base_target")
+        {
+          module::TargetType* baseTargetType = nullptr;
+          if (module->m_name == "core")
+          {
+            baseTargetType = module->GetTargetTypeByName("base_target");
+          }
+          else
+          {
+            baseTargetType = this->GetTargetTypeByName("core::base_target");
+          }
+          assert(baseTargetType);
+          module::TargetType tt = *baseTargetType;
+          tt.Load(json_target_type);
+          module->m_targetTypes.push_back(std::move(tt));
+        }
+        else
+        {
+          module::TargetType tt;
+          tt.Load(json_target_type);
+          module->m_targetTypes.push_back(std::move(tt));
+        }
       }
     }
 

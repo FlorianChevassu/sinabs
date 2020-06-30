@@ -1,0 +1,31 @@
+  /**
+  * Given a target, return an array of strings containing all its source files
+  */
+  def GetTargetObjects(target)
+  {
+    var result = [];
+    for (dep : target.GetDependentTargets())
+    {
+      if (dep.GetType() == "object")
+      {
+        //pause();
+        auto artifacts = dep.GetOrCreateProperty("GeneratedArtifacts").GetValue();
+        for(artifact : artifacts)
+        {
+          result.push_back(artifact);
+        }
+      }
+    }
+    return result;
+  }
+
+var objectFiles = GetTargetObjects(target);
+
+// IMPLEMENTATION //
+var command = "g++ ";
+for(objectFile: objectFiles)
+{
+  command += objectFile + " ";
+}
+command += " -o " + target.GetName() + ".exe";
+return command;

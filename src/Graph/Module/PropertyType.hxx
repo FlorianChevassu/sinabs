@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Graph/Node.hxx"
-
 #include "ModuleItem.hxx"
 
 #include "Graph/Module/Arity.hxx"
@@ -12,14 +10,9 @@
 
 namespace ngbs::graph::module
 {
-  class PropertyType : public NodeBase
+  class PropertyType
   {
   public:
-    static const NodeType Type = NodeType::PropertyType;
-    NodeType GetNodeType() override { return PropertyType::Type; }
-
-
-
     void Load(const nlohmann::json& i_json);
 
     std::string m_name;
@@ -35,7 +28,8 @@ namespace ngbs::graph::module
     {
       None = 0,
       Children = 1 << 0,
-      Parent = 1 << 1
+      Descendents = 1 << 1,
+      Parent = 1 << 2
     };
 
     inline friend Propagation  operator~  (Propagation a)                 { return (Propagation)~(int)a; }

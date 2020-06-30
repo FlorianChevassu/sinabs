@@ -11,6 +11,8 @@ target_sources(NGBS
     ModuleBuilder.cxx
     ProjectBuilder.hxx
     ProjectBuilder.cxx
+    ScriptEngine.hxx
+    ScriptEngine.cxx
 )
 
 add_subdirectory(Module)

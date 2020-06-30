@@ -3,6 +3,20 @@
   "name": "core",
   "target_types": [
     {
+      "name": "base_target",
+      "documentation": "Base of all targets. All target inherit from this target by default.",
+      "properties": [
+        {
+          "name": "GeneratedArtifacts",
+          "value": {
+            "type": "file",
+            "arity": "n"
+          },
+          "documentation": "List of files generated when this target is executed."
+        }
+      ]
+    },
+    {
       "name": "file",
       "properties": [
         {

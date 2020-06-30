@@ -1,27 +1,43 @@
 #include "Property.hxx"
 
-PropertyType GetPropertyTypeFromString(const std::string& i_propertyType)
+namespace ngbs::graph::project
 {
-  if (i_propertyType == "string")
+  DataType GetPropertyTypeFromString(const std::string& i_propertyType)
   {
-    return PropertyType::String;
-  }
-  if (i_propertyType == "folder")
-  {
-    return PropertyType::Folder;
-  }
-  if (i_propertyType == "file")
-  {
-    return PropertyType::File;
-  }
-  if (i_propertyType == "bool")
-  {
-    return PropertyType::Bool;
-  }
-  if (i_propertyType == "number")
-  {
-    return PropertyType::Number;
+    if (i_propertyType == "string")
+    {
+      return DataType::String;
+    }
+    if (i_propertyType == "folder")
+    {
+      return DataType::Folder;
+    }
+    if (i_propertyType == "file")
+    {
+      return DataType::File;
+    }
+    if (i_propertyType == "bool")
+    {
+      return DataType::Bool;
+    }
+    if (i_propertyType == "number")
+    {
+      return DataType::Number;
+    }
+
+    return DataType::Unknown;
   }
 
-  return PropertyType::Unknown;
+  std::string GetStringFromPropertyType(DataType i_propertyType)
+  {
+    switch (i_propertyType)
+    {
+    case DataType::String: return "string";
+    case DataType::Folder: return "folder";
+    case DataType::File: return "file";
+    case DataType::Bool: return "bool";
+    case DataType::Number: return "number";
+    case DataType::Unknown: return "unknown";
+    }
+  }
 }

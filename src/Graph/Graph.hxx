@@ -48,7 +48,7 @@ namespace ngbs::graph
     }
 
     template <class T>
-    const std::vector<NodeBase*> GetNodesByType() const
+    const std::vector<NodeBase*>& GetNodesByType() const
     {
       auto it = m_nodesByType.find(T::Type);
       if (it != m_nodesByType.end())
@@ -57,6 +57,17 @@ namespace ngbs::graph
       }
       //TODO: Should never happen. Should m_nodesByType be mutable so that we can use operator[] ?
       throw std::runtime_error("");
+    }
+
+    std::vector<const NodeBase*> GetNodes() const
+    {
+      std::vector<const NodeBase*> res;
+      res.reserve(m_nodes.size());
+      for (auto& node : m_nodes)
+      {
+        res.push_back(node.get());
+      }
+      return res;
     }
 
   private:
